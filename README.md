@@ -110,26 +110,17 @@ Serves UI and proxies the CAP OData service:
 
 ```json
 {
-  "authenticationMethod": "none",
   "routes": [
-    {
-      "source": "^/odata/v4/file/(.*)$",
-      "target": "/odata/v4/file/$1",
-      "destination": "srv-api",
-      "authenticationType": "none",
-      "csrfProtection": false
-    },
     {
       "source": "^/(.*)$",
       "target": "$1",
-      "localDir": "../fiori-app/webapp",
-      "authenticationType": "none"
+      "destination": "srv-api",
+      "csrfProtection": false
     }
-  ]
+  ],
+  "welcomeFile": "/exceluplaoderdownloaderapp/index.html"
 }
 ```
-
-> Note: If you change folder names, update `localDir` accordingly.
 
 ## API endpoints
 
