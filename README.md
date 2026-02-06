@@ -76,8 +76,7 @@ Backend will be available at:
 In a second terminal:
 
 ```bash
-cd app/local-approuter
-npm start
+cds bind --exec -- npm start --prefix app/local-approuter
 ```
 
 Open:
