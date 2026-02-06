@@ -194,25 +194,26 @@ Typical steps:
 3. Bind XSUAA instance for Cloud Foundry / deployment.
 4. Switch App Router routes to `authenticationType: "xsuaa"` and enable `forwardAuthToken: true`.
 
-If you want, add a dedicated section here once XSUAA is implemented and tested end-to-end.
-
-## Troubleshooting
-
-### UI does not load / 404 for index.html
-- Verify the UI exists at: `app/fiori-app/webapp/index.html`
-- Verify `localDir` in `app/local-approuter/xs-app.json` points to `../fiori-app/webapp`
-
-### App Router OAuth2 error: `OAuth2 requires "clientid" option`
-- This means the App Router is trying to do OAuth/XSUAA without credentials.
-- For no-auth local testing, ensure:
-  - `"authenticationMethod": "none"` at top level
-  - `"authenticationType": "none"` on routes
-  - `default-env.json` does **not** contain XSUAA settings
-
-### Download returns JSON / stream object instead of file
-- Ensure the backend `download` handler sends the binary response (or converts stream → buffer first).
-- Test with `sha256sum` to confirm correctness.
-
 ## License
 
-Internal / sample project (add a license if you plan to share publicly).
+MIT License
+
+Copyright (c) 2026
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
