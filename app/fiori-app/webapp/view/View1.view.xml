@@ -1,0 +1,99 @@
+<mvc:View
+    controllerName="exceluplaoderdownloaderapp.controller.View1"
+    xmlns:mvc="sap.ui.core.mvc"
+    xmlns="sap.m"
+    xmlns:u="sap.ui.unified"
+    displayBlock="true">
+    
+    <Page id="page" title="File Manager - Upload &amp; Download Excel Files">
+        <content>
+            <VBox class="sapUiSmallMargin">
+                
+                <!-- Upload Section -->
+                <Panel headerText="Upload New File" expandable="true" expanded="true">
+                    <content>
+                        <VBox class="sapUiSmallMargin">
+                            <Label text="Select Excel File:" />
+                            <u:FileUploader
+                                id="fileUploader"
+                                name="excelFile"
+                                uploadUrl="upload"
+                                tooltip="Upload your Excel file"
+                                placeholder="Choose an Excel file..."
+                                fileType="xlsx,xls"
+                                style="Emphasized"
+                                change="onFileChange"
+                                width="400px" />
+                            
+                            <Input
+                                id="noteInput"
+                                placeholder="Optional note..."
+                                width="400px"
+                                class="sapUiTinyMarginTop" />
+                            
+                            <Button
+                                id="uploadButton"
+                                text="Upload File"
+                                type="Emphasized"
+                                icon="sap-icon://upload"
+                                press="onUploadPress"
+                                enabled="false"
+                                class="sapUiTinyMarginTop" />
+                            
+                            <Text id="uploadStatus" class="sapUiTinyMarginTop" />
+                        </VBox>
+                    </content>
+                </Panel>
+
+                <!-- Files List Section -->
+                <Panel headerText="Uploaded Files" class="sapUiSmallMarginTop">
+                    <content>
+                        <Table
+                            id="filesTable"
+                            items="{/Files}"
+                            growing="true"
+                            growingThreshold="20">
+                            <columns>
+                                <Column width="30%">
+                                    <Text text="File Name" />
+                                </Column>
+                                <Column width="20%">
+                                    <Text text="MIME Type" />
+                                </Column>
+                                <Column width="10%" hAlign="End">
+                                    <Text text="Size (KB)" />
+                                </Column>
+                                <Column width="15%">
+                                    <Text text="Uploaded" />
+                                </Column>
+                                <Column width="15%">
+                                    <Text text="Note" />
+                                </Column>
+                                <Column width="10%" hAlign="Center">
+                                    <Text text="Actions" />
+                                </Column>
+                            </columns>
+                            <items>
+                                <ColumnListItem>
+                                    <cells>
+                                        <Text text="{fileName}" />
+                                        <Text text="{mimeType}" />
+                                        <Text text="{= ${fileSize} ? (${fileSize} / 1024).toFixed(2) : '0' }" />
+                                        <Text text="{path: 'createdAt', type: 'sap.ui.model.type.DateTime', formatOptions: {pattern: 'dd/MM/yyyy HH:mm'}}" />
+                                        <Text text="{note}" />
+                                        <Button
+                                            icon="sap-icon://download"
+                                            type="Transparent"
+                                            press="onDownloadPress"
+                                            tooltip="Download this file" />
+                                    </cells>
+                                </ColumnListItem>
+                            </items>
+                        </Table>
+                    </content>
+                </Panel>
+
+            </VBox>
+        </content>
+    </Page>
+</mvc:View>

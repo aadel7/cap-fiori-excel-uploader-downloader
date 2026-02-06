@@ -1,0 +1,11 @@
+{
+  "name": "local-approuter",
+  "version": "1.0.0",
+  "description": "Local App Router for testing",
+  "scripts": {
+    "start": "node node_modules/@sap/approuter/approuter.js"
+  },
+  "dependencies": {
+    "@sap/approuter": "^14.4.3"
+  }
+}

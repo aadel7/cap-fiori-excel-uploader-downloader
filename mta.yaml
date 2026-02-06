@@ -1,0 +1,121 @@
+_schema-version: 3.3.0
+ID: ExcelUploaderDownloader
+description: Excel Uploader Downloader + HANA Cloud + Fiori app
+version: 1.0.0
+modules:
+- name: ExcelUploaderDownloader-srv
+  type: nodejs
+  path: gen/srv
+  requires:
+  - name: ExcelUploaderDownloader-auth
+  - name: ExcelUploaderDownloader-db
+  provides:
+  - name: srv-api
+    properties:
+      srv-url: ${default-url}
+  parameters:
+    buildpack: nodejs_buildpack
+    instances: 1
+  build-parameters:
+    builder: npm-ci
+- name: ExcelUploaderDownloader-db-deployer
+  type: hdb
+  path: gen/db
+  requires:
+  - name: ExcelUploaderDownloader-db
+  parameters:
+    buildpack: nodejs_buildpack
+- name: exceluploaderdownloader-approuter
+  type: approuter.nodejs
+  path: app/approuter
+  requires:
+  - name: ExcelUploaderDownloader_html_repo_runtime
+  - name: ExcelUploaderDownloader-destination-service
+    group: destinations
+    properties:
+      forwardAuthToken: false
+      name: ui5
+      url: https://ui5.sap.com
+  parameters:
+    disk-quota: 256M
+    memory: 256M
+- name: ExcelUploaderDownloader_ui_deployer
+  type: com.sap.application.content
+  path: .
+  requires:
+  - name: ExcelUploaderDownloader_html_repo_host
+    parameters:
+      content-target: true
+  build-parameters:
+    build-result: resources
+    requires:
+    - artifacts:
+      - exceluplaoderdownloaderapp.zip
+      name: exceluplaoderdownloaderapp
+      target-path: resources/
+- name: exceluplaoderdownloaderapp
+  type: html5
+  path: app/fiori-app
+  build-parameters:
+    build-result: dist
+    builder: custom
+    commands:
+    - npm install
+    - npm run build:cf
+    supported-platforms: []
+resources:
+- name: ExcelUploaderDownloader-auth
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      oauth2-configuration:
+        credential-types:
+        - binding-secret
+        - x509
+      tenant-mode: dedicated
+      xsappname: ExcelUploaderDownloader
+    path: ./xs-security.json
+    service: xsuaa
+    service-plan: application
+- name: ExcelUploaderDownloader-db
+  type: com.sap.xs.hdi-container
+  parameters:
+    service: hana
+    service-plan: hdi-shared
+- name: ExcelUploaderDownloader_html_repo_runtime
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-runtime
+- name: ExcelUploaderDownloader_html_repo_host
+  type: org.cloudfoundry.managed-service
+  parameters:
+    service: html5-apps-repo
+    service-plan: app-host
+- name: ExcelUploaderDownloader-destination-service
+  type: org.cloudfoundry.managed-service
+  parameters:
+    config:
+      HTML5Runtime_enabled: false
+      init_data:
+        instance:
+          destinations:
+          - Authentication: NoAuthentication
+            Name: ui5
+            ProxyType: Internet
+            Type: HTTP
+            URL: https://ui5.sap.com
+          existing_destinations_policy: update
+      version: 1.0.0
+    service: destination
+    service-name: ExcelUploaderDownloader-destination-service
+    service-plan: lite
+parameters:
+  deploy_mode: html5-repo
+  enable-parallel-deployments: true
+build-parameters:
+  before-all:
+  - builder: custom
+    commands:
+    - npm ci
+    - npx cds build --production

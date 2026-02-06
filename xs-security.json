@@ -1,0 +1,65 @@
+{
+  "xsappname": "ExcelUploaderDownloader",
+  "tenant-mode": "dedicated",
+  "description": "Security descriptor for Excel Uploader/Downloader app",
+  "scopes": [
+    {
+      "name": "$XSAPPNAME.FileUpload",
+      "description": "Upload files"
+    },
+    {
+      "name": "$XSAPPNAME.FileDownload",
+      "description": "Download files"
+    },
+    {
+      "name": "$XSAPPNAME.FileView",
+      "description": "View file list"
+    },
+    {
+      "name": "$XSAPPNAME.FileDelete",
+      "description": "Delete files"
+    }
+  ],
+  "attributes": [],
+  "role-templates": [
+    {
+      "name": "FileViewer",
+      "description": "View uploaded files",
+      "scope-references": [
+        "$XSAPPNAME.FileView"
+      ]
+    },
+    {
+      "name": "FileUploader",
+      "description": "Upload and view files",
+      "scope-references": [
+        "$XSAPPNAME.FileView",
+        "$XSAPPNAME.FileUpload"
+      ]
+    },
+    {
+      "name": "FileDownloader",
+      "description": "Download and view files",
+      "scope-references": [
+        "$XSAPPNAME.FileView",
+        "$XSAPPNAME.FileDownload"
+      ]
+    },
+    {
+      "name": "FileAdmin",
+      "description": "Full access to file operations",
+      "scope-references": [
+        "$XSAPPNAME.FileView",
+        "$XSAPPNAME.FileUpload",
+        "$XSAPPNAME.FileDownload",
+        "$XSAPPNAME.FileDelete"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+    "token-validity": 7200,
+    "redirect-uris": [
+      "https://port5000-workspaces-ws-fxrog.eu10.applicationstudio.cloud.sap/login/callback"
+    ]
+  }
+}

@@ -1,0 +1,1 @@
+using FileService as service from '../../srv/cat-service';
